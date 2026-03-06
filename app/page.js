@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import SnakeGame from "../components/SnakeGame";
 
 const experience = [
   {
@@ -403,17 +404,20 @@ export default function Home() {
           </footer>
         </main>
 
-        <aside className="side-contact-card" aria-label="Contact card">
-          <div className="side-contact-title">Contact</div>
-          <p className="side-contact-note">Open to security engineering and red team collaboration.</p>
-          <div className="side-contact-links">
-            <a className="side-contact-link" href="mailto:tucker@agentmail.to">
-              tucker@agentmail.to
-            </a>
-            <a className="side-contact-link" href="tel:+14232908213">
-              +1 (423) 290-8213
-            </a>
+        <aside className="side-rail" aria-label="Sidebar">
+          <div className="side-contact-card">
+            <div className="side-contact-title">Contact</div>
+            <p className="side-contact-note">Open to security engineering and red team collaboration.</p>
+            <div className="side-contact-links">
+              <a className="side-contact-link" href="mailto:tucker@agentmail.to">
+                tucker@agentmail.to
+              </a>
+              <a className="side-contact-link" href="tel:+14232908213">
+                +1 (423) 290-8213
+              </a>
+            </div>
           </div>
+          <SnakeGame />
         </aside>
       </div>
     </>
