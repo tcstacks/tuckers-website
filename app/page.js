@@ -122,8 +122,12 @@ export default function Home() {
     const defaultContent = editableContent.innerHTML;
     const getNormalizedText = (value) => value.replace(/\s+/g, " ").trim().toLowerCase();
     const migrateSavedContent = (rawHtml) => {
+      const contactUpdatedHtml = rawHtml
+        .replace(/mailto:tuckerclark91@gmail\.com/g, "mailto:tucker@agentmail.to")
+        .replace(/tuckerclark91@gmail\.com/g, "tucker@agentmail.to");
+
       const workingWrapper = document.createElement("div");
-      workingWrapper.innerHTML = rawHtml;
+      workingWrapper.innerHTML = contactUpdatedHtml;
 
       const hasWorkingOnSection =
         workingWrapper.querySelector('[data-section="working-on"]') ||
@@ -131,14 +135,14 @@ export default function Home() {
         getNormalizedText(workingWrapper.textContent || "").includes("what i’m working on");
 
       if (hasWorkingOnSection) {
-        return rawHtml;
+        return contactUpdatedHtml;
       }
 
       const templateWrapper = document.createElement("div");
       templateWrapper.innerHTML = defaultContent;
       const workingOnSection = templateWrapper.querySelector('[data-section="working-on"]');
       if (!workingOnSection) {
-        return rawHtml;
+        return contactUpdatedHtml;
       }
 
       const experienceSection = workingWrapper.querySelector('[data-section="experience"]');
@@ -253,9 +257,9 @@ export default function Home() {
       }
 
       const yOffset = window.scrollY || window.pageYOffset || 0;
-      root.style.setProperty("--scroll-far", `${(yOffset * -0.05).toFixed(2)}px`);
-      root.style.setProperty("--scroll-mid", `${(yOffset * -0.11).toFixed(2)}px`);
-      root.style.setProperty("--scroll-near", `${(yOffset * -0.19).toFixed(2)}px`);
+      root.style.setProperty("--scroll-far", `${(yOffset * -0.08).toFixed(2)}px`);
+      root.style.setProperty("--scroll-mid", `${(yOffset * -0.18).toFixed(2)}px`);
+      root.style.setProperty("--scroll-near", `${(yOffset * -0.3).toFixed(2)}px`);
     };
 
     toggleEditButton.addEventListener("click", onToggleEdit);
@@ -294,11 +298,15 @@ export default function Home() {
   return (
     <>
       <div className="city-backdrop" aria-hidden="true">
+        <div className="city-moon"></div>
         <div className="city-glow"></div>
+        <div className="city-clouds city-clouds-back"></div>
+        <div className="city-clouds city-clouds-front"></div>
         <div className="city-haze"></div>
         <div className="city-layer layer-far"></div>
         <div className="city-layer layer-mid"></div>
         <div className="city-layer layer-near"></div>
+        <div className="city-road-lights"></div>
       </div>
       <div className="noise"></div>
 
@@ -317,82 +325,97 @@ export default function Home() {
         </span>
       </div>
 
-      <main className="container" id="editable-content" contentEditable={false} spellCheck={false}>
-        <div className="terminal-bar">
-          <div className="terminal-dot dot-red"></div>
-          <div className="terminal-dot dot-yellow"></div>
-          <div className="terminal-dot dot-green"></div>
-          <span className="terminal-title">tucker@dev ~ </span>
-        </div>
-        <div className="terminal-body">
-          <div className="prompt">
-            <span className="path">~/tucker</span> <span className="arrow">&gt;</span> whoami
+      <div className="page-layout">
+        <main className="container" id="editable-content" contentEditable={false} spellCheck={false}>
+          <div className="terminal-bar">
+            <div className="terminal-dot dot-red"></div>
+            <div className="terminal-dot dot-yellow"></div>
+            <div className="terminal-dot dot-green"></div>
+            <span className="terminal-title">tucker@dev ~ </span>
           </div>
-          <h1>
-            <span className="accent">Tucker Clark</span>
-          </h1>
-          <p className="tagline">senior red team operator · security engineer</p>
-          <p className="bio">
-            Senior Red Team Operator and Security Engineer with 5+ years of experience in red team operations and
-            penetration testing across networks, cloud, and web applications. 2+ years leading consulting projects and
-            technical teams with a background in AI, data science, and software engineering.
-            <span className="cursor"></span>
-          </p>
-          <div className="links">
-            <a href="mailto:tuckerclark91@gmail.com">tuckerclark91@gmail.com</a>
-            <a href="tel:+14232908213">+1 (423) 290-8213</a>
+          <div className="terminal-body">
+            <div className="prompt">
+              <span className="path">~/tucker</span> <span className="arrow">&gt;</span> whoami
+            </div>
+            <h1>
+              <span className="accent">Tucker Clark</span>
+            </h1>
+            <p className="tagline">senior red team operator · security engineer</p>
+            <p className="bio">
+              Senior Red Team Operator and Security Engineer with 5+ years of experience in red team operations and
+              penetration testing across networks, cloud, and web applications. 2+ years leading consulting projects and
+              technical teams with a background in AI, data science, and software engineering.
+              <span className="cursor"></span>
+            </p>
+            <div className="links">
+              <a href="mailto:tucker@agentmail.to">tucker@agentmail.to</a>
+              <a href="tel:+14232908213">+1 (423) 290-8213</a>
+            </div>
           </div>
-        </div>
 
-        <section data-section="working-on">
-          <div className="section-label">What I&apos;m Working On</div>
-          <div className="working-on-grid">
-            {whatImWorkingOn.map((item) => (
-              <article className="working-on-card" key={item.title}>
-                <div className="working-on-header">
-                  <span className="working-on-title">{item.title}</span>
-                  <span className="working-on-status">{item.status}</span>
-                </div>
-                <p className="working-on-desc">{item.description}</p>
-              </article>
-            ))}
+          <section data-section="working-on">
+            <div className="section-label">What I&apos;m Working On</div>
+            <div className="working-on-grid">
+              {whatImWorkingOn.map((item) => (
+                <article className="working-on-card" key={item.title}>
+                  <div className="working-on-header">
+                    <span className="working-on-title">{item.title}</span>
+                    <span className="working-on-status">{item.status}</span>
+                  </div>
+                  <p className="working-on-desc">{item.description}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section data-section="experience">
+            <div className="section-label">Experience</div>
+            <Projects items={experience} />
+          </section>
+
+          <section data-section="independent-projects">
+            <div className="section-label">Independent Projects</div>
+            <Projects items={independentProjects} />
+          </section>
+
+          <section data-section="skills">
+            <div className="section-label">Skills &amp; Certifications</div>
+            <div className="skills">
+              {skills.map((skill) => (
+                <span className="skill" key={skill}>
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </section>
+
+          <section data-section="education">
+            <div className="section-label">Education</div>
+            <p className="edu-note">
+              B.S. in Computer Science (Data Science), University of Tennessee at Chattanooga (May 2020). Teaching
+              Assistant for Intro to Machine Learning; recipient of NSF S-STEM scholarship and UTC Freshman Mathematics
+              Award.
+            </p>
+          </section>
+
+          <footer>
+            <span className="accent">&gt;</span> built by tucker · 2026
+          </footer>
+        </main>
+
+        <aside className="side-contact-card" aria-label="Contact card">
+          <div className="side-contact-title">Contact</div>
+          <p className="side-contact-note">Open to security engineering and red team collaboration.</p>
+          <div className="side-contact-links">
+            <a className="side-contact-link" href="mailto:tucker@agentmail.to">
+              tucker@agentmail.to
+            </a>
+            <a className="side-contact-link" href="tel:+14232908213">
+              +1 (423) 290-8213
+            </a>
           </div>
-        </section>
-
-        <section data-section="experience">
-          <div className="section-label">Experience</div>
-          <Projects items={experience} />
-        </section>
-
-        <section data-section="independent-projects">
-          <div className="section-label">Independent Projects</div>
-          <Projects items={independentProjects} />
-        </section>
-
-        <section data-section="skills">
-          <div className="section-label">Skills &amp; Certifications</div>
-          <div className="skills">
-            {skills.map((skill) => (
-              <span className="skill" key={skill}>
-                {skill}
-              </span>
-            ))}
-          </div>
-        </section>
-
-        <section data-section="education">
-          <div className="section-label">Education</div>
-          <p className="edu-note">
-            B.S. in Computer Science (Data Science), University of Tennessee at Chattanooga (May 2020). Teaching
-            Assistant for Intro to Machine Learning; recipient of NSF S-STEM scholarship and UTC Freshman Mathematics
-            Award.
-          </p>
-        </section>
-
-        <footer>
-          <span className="accent">&gt;</span> built by tucker · 2026
-        </footer>
-      </main>
+        </aside>
+      </div>
     </>
   );
 }
