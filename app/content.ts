@@ -6,17 +6,17 @@
 export const content = {
   // ----- Browser tab + SEO -----
   meta: {
-    title: "yourname — Offensive security engineer",
+    title: "Tucker — Indie hacker & AI builder",
     description:
-      "Offensive security engineer focused on red team operations, exploit development, and adversarial research.",
+      "Tucker builds focused internet products, useful AI tools, and small experiments in public.",
   },
 
   // ----- Sidebar -----
   sidebar: {
-    logo: "yourname",
-    tagLine1: "Offensive security engineer",
-    tagLine2: "red team & exploit research",
-    status: "Available for work · May 2026",
+    logo: "tucker",
+    tagLine1: "Indie hacker & AI builder",
+    tagLine2: "shipping useful things on the internet",
+    status: "Building in public · always experimenting",
     socials: [
       { label: "GitHub", href: "#" },
       { label: "X / Twitter", href: "#" },
@@ -34,49 +34,49 @@ export const content = {
 
   // ----- Hero -----
   hero: {
-    kicker: "— Offensive security, 2026",
-    headlineLine1: "Quiet attacks,",
-    headlineAccent: "careful research.",
+    kicker: "— Indie hacking & AI, 2026",
+    headlineLine1: "Small teams,",
+    headlineAccent: "useful leverage.",
     lede:
-      "Offensive security engineer focused on red team operations, exploit development, and adversarial research — usually for teams that don\u2019t want to make the news.",
+      "I build small products, AI-native tools, and experiments that make the internet a little more useful — then share what I learn along the way.",
     meta: {
-      location: "California",
-      availability: "Booking Q3 — Q4",
+      location: "California · online",
+      availability: "Open to good ideas",
       email: "hello@example.com",
     },
   },
 
   // ----- Work / engagements section -----
   work: {
-    label: "Selected engagements",
-    count: "04 / 28",
+    label: "Selected builds",
+    count: "04 / 12",
     items: [
-      { year: "2026", title: "Aperture", tag: "Red Team", href: "#" },
-      { year: "2025", title: "Riptide", tag: "Exploit Dev", href: "#" },
-      { year: "2024", title: "Blackbox", tag: "Research", href: "#" },
-      { year: "2023", title: "Beacon", tag: "Tooling", href: "#" },
+      { year: "2026", title: "Prompt Bench", tag: "AI product", href: "#" },
+      { year: "2025", title: "Tiny Tools", tag: "Micro-SaaS", href: "#" },
+      { year: "2024", title: "Signal Garden", tag: "Experiment", href: "#" },
+      { year: "2023", title: "Field Notes", tag: "Open source", href: "#" },
     ],
-    seeAllLabel: "See all engagements →",
+    seeAllLabel: "See all builds →",
     seeAllHref: "#",
   },
 
   // ----- Writing section -----
   writing: {
-    label: "Research & writing",
-    count: "03 / 14",
+    label: "Notes & writing",
+    count: "03 / 10",
     items: [
       {
-        title: "The patience of a good attacker",
+        title: "What I learned shipping a tiny AI product",
         date: "May 2026",
         href: "#",
       },
       {
-        title: "Bypassing modern EDR, gently",
+        title: "A practical case for smaller software",
         date: "Mar 2026",
         href: "#",
       },
       {
-        title: "Notes from a quiet red team",
+        title: "Notes on building in public",
         date: "Jan 2026",
         href: "#",
       },
@@ -87,13 +87,13 @@ export const content = {
   contact: {
     label: "Contact",
     email: "hello@example.com",
-    note: "PGP available on request. Reply within a day or two.",
+    note: "Interested in a project, collaboration, or a strange idea? I’d love to hear it.",
   },
 
   // ----- Footer -----
   footer: {
-    left: "© 2026 yourname",
-    right: "v4 · Updated May 2026",
+    left: "© 2026 Tucker",
+    right: "Building in public · 2026",
   },
 };
 

@@ -1,10 +1,12 @@
 {
-  "name": "personal-website",
+  "name": "tucker-personal-website-indie",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:static": "next dev static-site",
     "build": "next build",
+    "build:static": "next build static-site",
     "start": "next start",
     "lint": "eslint"
   },

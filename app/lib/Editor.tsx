@@ -128,31 +128,16 @@ export function AddItem({ path, template, label = "+ Add item" }: AddItemProps) 
 }
 
 export function EditToolbar() {
-  const { editMode, setEditMode, reset, exportContent } = useContent();
+  const { editMode, setEditMode } = useContent();
+  if (editMode) return null;
   return (
-    <div className={`editToolbar ${editMode ? "on" : ""}`}>
-      {editMode && (
-        <>
-          <button
-            type="button"
-            className="ghost"
-            onClick={() => {
-              if (confirm("Reset all changes to defaults?")) reset();
-            }}
-          >
-            Reset
-          </button>
-          <button type="button" className="ghost" onClick={exportContent}>
-            Export
-          </button>
-        </>
-      )}
+    <div className="editToolbar">
       <button
         type="button"
-        className={`editToggle ${editMode ? "on" : ""}`}
-        onClick={() => setEditMode(!editMode)}
+        className="editToggle"
+        onClick={() => setEditMode(true)}
       >
-        {editMode ? "Done" : "Edit"}
+        <span aria-hidden="true">✎</span> Edit content
       </button>
     </div>
   );
