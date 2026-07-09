@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useContent } from "./contentStore";
 import { AddItem, EditField, ListControls } from "./Editor";
 
+const hasLink = (href: string) => href.trim() !== "" && href !== "#";
+
 export function SiteShell() {
   const { content, editMode } = useContent();
   const { sidebar, nav, hero, work, writing, contact, footer } = content;
@@ -11,25 +13,31 @@ export function SiteShell() {
   const [active, setActive] = useState(firstNavId);
 
   useEffect(() => {
-    const els = document.querySelectorAll<HTMLElement>(".fade");
-    els.forEach((el, i) => {
-      el.style.setProperty("--d", `${i * 60}ms`);
-      requestAnimationFrame(() => el.classList.add("in"));
-    });
-  }, []);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActive(e.target.id);
-        });
-      },
-      { rootMargin: "-45% 0px -50% 0px", threshold: 0 },
+    const sections = Array.from(
+      document.querySelectorAll<HTMLElement>("section[id]"),
     );
-    document.querySelectorAll("section[id]").forEach((s) => observer.observe(s));
-    return () => observer.disconnect();
-  }, []);
+
+    const updateActiveSection = () => {
+      const marker = window.scrollY + window.innerHeight * 0.35;
+      let nextActive = firstNavId;
+
+      for (const section of sections) {
+        if (section.offsetTop > marker) break;
+        nextActive = section.id;
+      }
+
+      setActive(nextActive);
+    };
+
+    updateActiveSection();
+    window.addEventListener("scroll", updateActiveSection, { passive: true });
+    window.addEventListener("resize", updateActiveSection);
+
+    return () => {
+      window.removeEventListener("scroll", updateActiveSection);
+      window.removeEventListener("resize", updateActiveSection);
+    };
+  }, [firstNavId]);
 
   return (
     <div
@@ -43,6 +51,9 @@ export function SiteShell() {
         if (anchor) e.preventDefault();
       }}
     >
+      <a className="skipLink" href="#intro">
+        Skip to content
+      </a>
       <div className="bg" aria-hidden="true">
         <div className="glow" />
         <div className="horizon" />
@@ -50,10 +61,10 @@ export function SiteShell() {
       </div>
 
       <div className="shell">
-        <aside className="sidebar">
+        <aside className="sidebar" aria-label="Site navigation">
           <div className="sideTop">
             <a href={`#${firstNavId}`} className="logo">
-              <span className="logoDot" />
+              <span className="logoDot" aria-hidden="true" />
               <EditField path="sidebar.logo" />
             </a>
             <p className="sideTag">
@@ -68,6 +79,7 @@ export function SiteShell() {
                 <a
                   href={`#${s.id}`}
                   className={`navItem ${active === s.id ? "active" : ""}`}
+                  aria-current={active === s.id ? "location" : undefined}
                 >
                   <EditField path={`nav.${i}.num`} className="navNum" />
                   <span className="navTick" />
@@ -85,22 +97,33 @@ export function SiteShell() {
 
           <div className="sideFoot">
             <div className="status">
-              <span className="pulse" />
+              <span className="pulse" aria-hidden="true" />
               <EditField path="sidebar.status" />
             </div>
             <div className="socials">
-              {sidebar.socials.map((s, i) => (
-                <div key={`${s.label}-${i}`} className="socialRow">
-                  <a href={s.href}>
-                    <EditField path={`sidebar.socials.${i}.label`} /> ↗
-                  </a>
-                  <ListControls
-                    path="sidebar.socials"
-                    index={i}
-                    length={sidebar.socials.length}
-                  />
-                </div>
-              ))}
+              {sidebar.socials.map((s, i) => {
+                const linked = hasLink(s.href);
+                if (!linked && !editMode) return null;
+
+                return (
+                  <div key={`${s.label}-${i}`} className="socialRow">
+                    {linked ? (
+                      <a href={s.href} target="_blank" rel="noreferrer">
+                        <EditField path={`sidebar.socials.${i}.label`} /> ↗
+                      </a>
+                    ) : (
+                      <span className="inactiveLink">
+                        <EditField path={`sidebar.socials.${i}.label`} />
+                      </span>
+                    )}
+                    <ListControls
+                      path="sidebar.socials"
+                      index={i}
+                      length={sidebar.socials.length}
+                    />
+                  </div>
+                );
+              })}
               <AddItem
                 path="sidebar.socials"
                 template={{ label: "Link", href: "#" }}
@@ -111,9 +134,9 @@ export function SiteShell() {
         </aside>
 
         <main className="content">
-          <section id="intro" className="intro">
+          <section id="intro" className="intro" aria-labelledby="intro-heading">
             <EditField path="hero.kicker" as="p" className="kicker fade" />
-            <h1 className="fade">
+            <h1 id="intro-heading" className="fade">
               <EditField path="hero.headlineLine1" /><br />
               <EditField path="hero.headlineAccent" className="accent" />
             </h1>
@@ -129,60 +152,101 @@ export function SiteShell() {
             </div>
           </section>
 
-          <section id="work" className="section">
+          <section id="work" className="section" aria-labelledby="work-heading">
             <header className="sectionHead fade">
-              <EditField path="work.label" as="p" className="label" />
-              <EditField path="work.count" className="count" />
+              <h2 id="work-heading" className="label">
+                <EditField path="work.label" />
+              </h2>
+              {hasLink(work.seeAllHref) ? (
+                <EditField path="work.count" className="count" />
+              ) : null}
             </header>
             <ul className="list fade">
-              {work.items.map((item, i) => (
-                <li key={`${item.title}-${i}`} className="row">
-                  <EditField path={`work.items.${i}.year`} className="rowYear" />
-                  <EditField path={`work.items.${i}.title`} className="rowTitle" />
-                  <EditField path={`work.items.${i}.tag`} className="rowTag" />
-                  <span className="rowArrow">→</span>
-                  <ListControls
-                    path="work.items"
-                    index={i}
-                    length={work.items.length}
-                  />
-                </li>
-              ))}
+              {work.items.map((item, i) => {
+                const rowContent = (
+                  <>
+                    <EditField path={`work.items.${i}.year`} className="rowYear" />
+                    <EditField path={`work.items.${i}.title`} className="rowTitle" />
+                    <EditField path={`work.items.${i}.tag`} className="rowTag" />
+                    <span className="rowArrow" aria-hidden="true">↗</span>
+                  </>
+                );
+
+                return (
+                  <li key={`${item.title}-${i}`} className="row">
+                    {hasLink(item.href) ? (
+                      <a href={item.href} className="rowLink">
+                        {rowContent}
+                      </a>
+                    ) : (
+                      <div className="rowLink rowLinkStatic">{rowContent}</div>
+                    )}
+                    <ListControls
+                      path="work.items"
+                      index={i}
+                      length={work.items.length}
+                    />
+                  </li>
+                );
+              })}
             </ul>
             <AddItem
               path="work.items"
               template={{ year: "2026", title: "New", tag: "Tag", href: "#" }}
               label="+ Engagement"
             />
-            <a href={work.seeAllHref} className="seeAll fade">
-              <EditField path="work.seeAllLabel" />
-            </a>
+            {hasLink(work.seeAllHref) ? (
+              <a href={work.seeAllHref} className="seeAll fade">
+                <EditField path="work.seeAllLabel" />
+              </a>
+            ) : null}
           </section>
 
-          <section id="writing" className="section">
+          <section
+            id="writing"
+            className="section"
+            aria-labelledby="writing-heading"
+          >
             <header className="sectionHead fade">
-              <EditField path="writing.label" as="p" className="label" />
-              <EditField path="writing.count" className="count" />
+              <h2 id="writing-heading" className="label">
+                <EditField path="writing.label" />
+              </h2>
             </header>
             <ul className="notes fade">
-              {writing.items.map((item, i) => (
-                <li key={`${item.title}-${i}`}>
-                  <a href={item.href}>
-                    <EditField path={`writing.items.${i}.title`} />
-                  </a>
-                  <span className="noteRight">
+              {writing.items.map((item, i) => {
+                const rowContent = (
+                  <>
                     <EditField
-                      path={`writing.items.${i}.date`}
-                      className="noteMeta"
+                      path={`writing.items.${i}.title`}
+                      className="noteTitle"
                     />
+                    <span className="noteRight">
+                      <EditField
+                        path={`writing.items.${i}.date`}
+                        className="noteMeta"
+                      />
+                      <span className="noteArrow" aria-hidden="true">↗</span>
+                    </span>
+                  </>
+                );
+
+                return (
+                  <li key={`${item.title}-${i}`} className="noteRow">
+                    {hasLink(item.href) ? (
+                      <a href={item.href} className="noteLink">
+                        {rowContent}
+                      </a>
+                    ) : (
+                      <div className="noteLink noteLinkStatic">{rowContent}</div>
+                    )}
                     <ListControls
                       path="writing.items"
                       index={i}
                       length={writing.items.length}
                     />
-                  </span>
-                </li>
-              ))}
+                  </li>
+                );
+              })}
             </ul>
             <AddItem
               path="writing.items"
@@ -191,8 +255,14 @@ export function SiteShell() {
             />
           </section>
 
-          <section id="contact" className="section contact">
-            <EditField path="contact.label" as="p" className="label fade" />
+          <section
+            id="contact"
+            className="section contact"
+            aria-labelledby="contact-heading"
+          >
+            <h2 id="contact-heading" className="label fade">
+              <EditField path="contact.label" />
+            </h2>
             <a href={`mailto:${contact.email}`} className="email fade">
               <EditField path="contact.email" />
             </a>
