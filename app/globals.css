@@ -293,7 +293,7 @@ button:focus-visible,
 /* ---- Intro ---- */
 .intro {
   position: relative;
-  min-height: 30rem;
+  min-height: 20rem;
   padding: 4.25rem 0 3.75rem;
   display: flex;
   flex-direction: column;
@@ -329,7 +329,7 @@ h1 {
 
 .lede {
   max-width: 43rem;
-  margin: 2rem 0 0;
+  margin: 0;
   color: rgba(243, 240, 233, 0.73);
   font-size: clamp(1rem, 1.55vw, 1.12rem);
   line-height: 1.75;
@@ -584,6 +584,264 @@ h1 {
   display: none;
 }
 
+/* ---- Experience ---- */
+.experienceList {
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+  list-style: none;
+}
+
+.experienceItem {
+  position: relative;
+  padding: 1.75rem 0 1.8rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.experienceItem::before {
+  content: "";
+  position: absolute;
+  top: 2.05rem;
+  left: 0;
+  width: 0.4rem;
+  height: 0.4rem;
+  border: 1px solid var(--accent);
+  background: var(--bg);
+  transform: rotate(45deg);
+}
+
+.experienceTop {
+  margin-bottom: 0.6rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: baseline;
+  gap: 0.75rem 1.5rem;
+}
+
+.experiencePeriod,
+.experienceLocation {
+  margin: 0;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
+}
+
+.experienceLocation {
+  text-align: right;
+}
+
+.experienceCompany {
+  margin: 0;
+  color: var(--fg);
+  font-size: clamp(1.15rem, 2vw, 1.32rem);
+  font-weight: 540;
+  letter-spacing: -0.025em;
+  line-height: 1.3;
+}
+
+.experienceRole {
+  margin: 0.25rem 0 0;
+  color: var(--accent-soft);
+  font-size: 0.95rem;
+  font-weight: 480;
+  line-height: 1.5;
+}
+
+.experienceHighlights,
+.educationHighlights {
+  margin: 1rem 0 0;
+  padding: 0;
+  color: rgba(243, 240, 233, 0.74);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  list-style: none;
+}
+
+.experienceHighlights li,
+.educationHighlights li {
+  position: relative;
+  padding-left: 1rem;
+}
+
+.experienceHighlights li + li,
+.educationHighlights li + li {
+  margin-top: 0.55rem;
+}
+
+.experienceHighlights li::before,
+.educationHighlights li::before {
+  content: "—";
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: var(--muted-2);
+  font-family: var(--mono);
+}
+
+/* ---- Research ---- */
+.researchList {
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+  list-style: none;
+}
+
+.researchItem {
+  position: relative;
+  border-bottom: 1px solid var(--line);
+}
+
+.researchLink {
+  min-height: 6rem;
+  padding: 1.25rem 0.85rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 1.25rem;
+  transition: background 180ms ease, transform 220ms ease;
+}
+
+a.researchLink:hover {
+  background: linear-gradient(90deg, var(--accent-faint), transparent 62%);
+  transform: translateX(0.3rem);
+}
+
+.researchMain {
+  min-width: 0;
+}
+
+.researchTitle {
+  display: block;
+  margin: 0;
+  color: var(--fg);
+  font-size: 1.05rem;
+  font-weight: 520;
+  letter-spacing: -0.015em;
+  line-height: 1.45;
+  transition: color 180ms ease;
+}
+
+.researchDescription {
+  display: block;
+  max-width: 42rem;
+  margin: 0.45rem 0 0;
+  color: rgba(243, 240, 233, 0.7);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+.researchMeta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.55rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+a.researchLink:hover .researchTitle {
+  color: var(--accent-soft);
+}
+
+/* ---- Expertise ---- */
+.skillsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--line);
+}
+
+.skillGroup {
+  position: relative;
+  min-width: 0;
+  padding: 1.35rem 1.4rem 1.45rem;
+  background: var(--bg);
+}
+
+.skillTitle {
+  display: block;
+  margin: 0 0 0.55rem;
+  color: var(--fg);
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+.skillDetail {
+  display: block;
+  margin: 0;
+  color: rgba(243, 240, 233, 0.72);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+/* ---- Education ---- */
+.educationCard {
+  position: relative;
+  padding: clamp(1.35rem, 3vw, 1.8rem);
+  border: 1px solid var(--line-strong);
+  background: rgba(17, 17, 20, 0.45);
+}
+
+.educationTop {
+  margin-bottom: 0.85rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+}
+
+.educationSchool {
+  margin: 0;
+  color: var(--fg);
+  font-size: clamp(1.12rem, 2vw, 1.3rem);
+  font-weight: 540;
+  letter-spacing: -0.025em;
+  line-height: 1.35;
+}
+
+.educationMeta {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.25rem 0.85rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.045em;
+  text-align: right;
+}
+
+.educationMeta .dot {
+  width: 3px;
+  height: 3px;
+  flex: 0 0 auto;
+  align-self: center;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.educationDegree {
+  margin: 0;
+  display: block;
+  color: var(--accent-soft);
+  font-size: 0.98rem;
+  font-weight: 480;
+  line-height: 1.55;
+}
+
 /* ---- Contact ---- */
 .contact {
   position: relative;
@@ -697,7 +955,9 @@ h1 {
     gap: 0;
   }
 
+
   .sidebar {
+    flex-wrap: wrap;
     min-height: 0;
     height: auto;
     padding: 1rem 0;
@@ -722,9 +982,15 @@ h1 {
   }
 
   .nav {
+    min-width: 0;
     margin-left: auto;
-    flex-direction: row;
+    flex-flow: row wrap;
+    justify-content: flex-end;
     gap: clamp(0.65rem, 2.8vw, 1.35rem);
+  }
+
+  .navRow {
+    min-width: 0;
   }
 
   .navItem {
@@ -752,11 +1018,15 @@ h1 {
   }
 
   .intro {
-    min-height: 30rem;
+    min-height: 20rem;
   }
 
   .section {
-    scroll-margin-top: 4.75rem;
+    scroll-margin-top: 6.5rem;
+  }
+
+  .intro {
+    scroll-margin-top: 6.5rem;
   }
 }
 
@@ -774,8 +1044,42 @@ h1 {
   .nav {
     width: 100%;
     margin-left: 0;
-    justify-content: space-between;
-    gap: 0.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    justify-content: initial;
+    gap: 0.2rem 0.5rem;
+  }
+
+  .navItem {
+    width: 100%;
+    min-width: 0;
+    padding: 0.35rem 0.25rem;
+    justify-content: flex-start;
+  }
+
+  .navLabel {
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .nav > .addItem {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+
+  .editing .navRow {
+    flex-wrap: wrap;
+  }
+
+  .editing .navRow .navItem {
+    flex: 1 1 100%;
+  }
+
+  .editing .navRow .rowControls {
+    width: 100%;
+    margin: 0.1rem 0 0.35rem;
+    justify-content: flex-start;
   }
 
   .intro {
@@ -801,7 +1105,11 @@ h1 {
 
   .section {
     padding: 3.25rem 0;
-    scroll-margin-top: 7.5rem;
+    scroll-margin-top: 10rem;
+  }
+
+  .intro {
+    scroll-margin-top: 10rem;
   }
 
   .sectionHead {
@@ -845,6 +1153,52 @@ h1 {
     gap: 0.35rem;
   }
 
+  .experienceTop {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 0.35rem;
+  }
+
+  .educationTop {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .experienceLocation,
+  .educationMeta {
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .researchLink {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.55rem;
+    padding-right: 0.45rem;
+    padding-left: 0.45rem;
+  }
+
+  .researchMeta {
+    justify-content: flex-start;
+    white-space: normal;
+  }
+
+  a.researchLink:hover {
+    transform: none;
+  }
+
+  .skillsGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .skillGroup {
+    padding: 1.25rem;
+  }
+
+  .educationCard {
+    padding: 1.3rem;
+  }
+
   .contact {
     margin: 0;
     padding: 3.25rem 0;
@@ -860,11 +1214,12 @@ h1 {
 
 @media (max-width: 420px) {
   .nav {
-    gap: 0.2rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.2rem 0.5rem;
   }
 
   .navItem {
-    font-size: 0.7rem;
+    font-size: 0.72rem;
   }
 }
 
@@ -1644,6 +1999,16 @@ h1 {
   color: inherit;
 }
 
+.editing .researchLink:hover {
+  background: transparent;
+  transform: none;
+}
+
+.editing .researchLink:hover .researchTitle {
+  color: inherit;
+}
+
+
 .editing .navItem,
 .editing a {
   pointer-events: auto;
@@ -1673,6 +2038,23 @@ h1 {
   top: 50%;
   transform: translateY(-50%);
 }
+
+.editing .experienceItem > .rowControls,
+.editing .researchItem > .rowControls,
+.editing .skillGroup > .rowControls {
+  position: absolute;
+  top: 1rem;
+  right: 0.75rem;
+  z-index: 1;
+  margin: 0;
+}
+
+.editing .experienceItem,
+.editing .researchItem,
+.editing .skillGroup {
+  padding-right: 6.5rem;
+}
+
 
 .rowControls button {
   display: inline-flex;
@@ -1807,6 +2189,27 @@ h1 {
     transform: none;
     margin-top: 0.5rem;
   }
+
+  .editing .experienceItem > .rowControls,
+  .editing .skillGroup > .rowControls {
+    position: static;
+    margin: 0.75rem 0 0;
+  }
+
+  .editing .researchItem > .rowControls {
+    position: static;
+    margin: 0.75rem 0 0.9rem 0.45rem;
+  }
+
+  .editing .experienceItem,
+  .editing .researchItem {
+    padding-right: 0;
+  }
+
+  .editing .skillGroup {
+    padding-right: 1.25rem;
+  }
+
   .editToolbar {
     bottom: 0.75rem;
     right: 0.75rem;

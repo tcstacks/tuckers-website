@@ -5,25 +5,22 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useRef,
   useState,
   type ReactNode,
 } from "react";
 import { content as defaultContent, type SiteContent } from "../content";
 
+const STORAGE_KEY = "site-content-v3";
+
 type Ctx = {
   content: SiteContent;
   editMode: boolean;
-  saveState: "saved" | "saving" | "error";
-  savedAt: Date | null;
   setEditMode: (v: boolean) => void;
   set: (path: string, value: unknown) => void;
   addItem: (path: string, item: unknown) => void;
   removeItem: (path: string, index: number) => void;
   moveItem: (path: string, index: number, delta: number) => void;
   reset: () => void;
-  saveNow: () => Promise<boolean>;
-  importContent: (value: unknown) => boolean;
   exportContent: () => void;
 };
 
@@ -54,61 +51,39 @@ function setByPath<T>(obj: T, path: string, value: unknown): T {
   return next as unknown as T;
 }
 
-export function ContentProvider({
-  children,
-  initialContent = defaultContent,
-  initialEditMode = false,
-  saveMode = "none",
-}: {
-  children: ReactNode;
-  initialContent?: SiteContent;
-  initialEditMode?: boolean;
-  saveMode?: "none" | "server";
-}) {
-  const [content, setContent] = useState<SiteContent>(() =>
-    deepClone(initialContent),
-  );
-  const [editMode, setEditMode] = useState(initialEditMode);
-  const [saveState, setSaveState] = useState<"saved" | "saving" | "error">(
-    "saved",
-  );
-  const [savedAt, setSavedAt] = useState<Date | null>(null);
-  const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const persist = useCallback(async (value: SiteContent) => {
-    if (saveMode !== "server") return true;
-    try {
-      const response = await fetch("/api/content", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(value),
-      });
-      if (!response.ok) throw new Error("Save failed");
-      setSavedAt(new Date());
-      setSaveState("saved");
-      return true;
-    } catch {
-      setSaveState("error");
-      return false;
-    }
-  }, [saveMode]);
+export function ContentProvider({ children }: { children: ReactNode }) {
+  const [content, setContent] = useState<SiteContent>(defaultContent);
+  const [editMode, setEditMode] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    if (saveMode !== "server") return;
-    if (saveTimer.current) clearTimeout(saveTimer.current);
-    saveTimer.current = setTimeout(() => void persist(content), 650);
-    return () => {
-      if (saveTimer.current) clearTimeout(saveTimer.current);
-    };
-  }, [content, persist, saveMode]);
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setContent(parsed);
+      }
+    } catch {
+      // ignore
+    }
+    setLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (!loaded) return;
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(content));
+    } catch {
+      // ignore
+    }
+  }, [content, loaded]);
 
   const set = useCallback((path: string, value: unknown) => {
-    setSaveState("saving");
     setContent((c) => setByPath(c, path, value));
   }, []);
 
   const addItem = useCallback((path: string, item: unknown) => {
-    setSaveState("saving");
     setContent((c) => {
       const arr = getByPath(c, path);
       if (!Array.isArray(arr)) return c;
@@ -117,7 +92,6 @@ export function ContentProvider({
   }, []);
 
   const removeItem = useCallback((path: string, index: number) => {
-    setSaveState("saving");
     setContent((c) => {
       const arr = getByPath(c, path);
       if (!Array.isArray(arr)) return c;
@@ -126,7 +100,6 @@ export function ContentProvider({
   }, []);
 
   const moveItem = useCallback((path: string, index: number, delta: number) => {
-    setSaveState("saving");
     setContent((c) => {
       const arr = getByPath(c, path);
       if (!Array.isArray(arr)) return c;
@@ -140,45 +113,17 @@ export function ContentProvider({
   }, []);
 
   const reset = useCallback(() => {
-    setSaveState("saving");
     setContent(deepClone(defaultContent));
-  }, []);
-
-  const saveNow = useCallback(async () => {
-    if (saveTimer.current) clearTimeout(saveTimer.current);
-    setSaveState("saving");
-    return persist(content);
-  }, [content, persist]);
-
-  const importContent = useCallback((value: unknown) => {
-    if (!value || typeof value !== "object" || Array.isArray(value)) {
-      return false;
-    }
-    const candidate = value as Partial<SiteContent>;
-    if (
-      !candidate.meta ||
-      !candidate.sidebar ||
-      !candidate.hero ||
-      !candidate.work ||
-      !candidate.writing ||
-      !candidate.contact ||
-      !candidate.footer ||
-      !Array.isArray(candidate.nav)
-    ) {
-      return false;
-    }
-    setSaveState("saving");
-    setContent(deepClone(candidate as SiteContent));
-    return true;
   }, []);
 
   const exportContent = useCallback(() => {
     const body = JSON.stringify(content, null, 2);
-    const blob = new Blob([body], { type: "application/json" });
+    const ts = `// Edit this file to update every piece of copy on the site.\n// Generated by the in-browser editor.\n\nexport const content = ${body};\n\nexport type SiteContent = typeof content;\n`;
+    const blob = new Blob([ts], { type: "text/typescript" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "tucker-site-content.json";
+    a.download = "content.ts";
     document.body.appendChild(a);
     a.click();
     a.remove();
@@ -190,16 +135,12 @@ export function ContentProvider({
       value={{
         content,
         editMode,
-        saveState,
-        savedAt,
         setEditMode,
         set,
         addItem,
         removeItem,
         moveItem,
         reset,
-        saveNow,
-        importContent,
         exportContent,
       }}
     >

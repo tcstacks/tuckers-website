@@ -4,96 +4,165 @@
 // ============================================================
 
 export const content = {
-  // ----- Browser tab + SEO -----
   meta: {
-    title: "Tucker — Indie hacker & AI builder",
+    title: "Tucker Clark — Senior Offensive Security Engineer",
     description:
-      "Tucker builds focused internet products, useful AI tools, and small experiments in public.",
+      "Senior Offensive Security Engineer with 7 years of experience delivering red team operations, penetration testing, and application security assessments across network, cloud, web, and AI environments.",
   },
 
-  // ----- Sidebar -----
   sidebar: {
-    logo: "tucker",
-    tagLine1: "Indie hacker & AI builder",
-    tagLine2: "shipping useful things on the internet",
-    status: "Building in public · always experimenting",
+    logo: "Tucker Clark",
+    tagLine1: "Senior Offensive Security Engineer",
+    tagLine2: "offensive security · red team · AI security",
+    status: "7 years in technology",
     socials: [
-      { label: "GitHub", href: "#" },
-      { label: "X / Twitter", href: "#" },
-      { label: "Signal", href: "#" },
+      {
+        label: "Resume",
+        href: "https://docs.google.com/document/d/e/2PACX-1vR7hSr0_RkkJg8eV_P6DAuthIdMr4BgroQqOcnjh49HaPPOZ1LupkTxvVTs-gEkiw/pub",
+      },
+      {
+        label: "M-Trends 2024",
+        href: "https://services.google.com/fh/files/misc/06-ai-article-m-trends-2024.pdf",
+      },
+      { label: "Email", href: "mailto:tuckerclark91@gmail.com" },
     ],
   },
 
-  // ----- Sidebar nav (also drives scrollspy) -----
   nav: [
     { id: "intro", label: "Intro", num: "00" },
-    { id: "work", label: "Work", num: "01" },
-    { id: "writing", label: "Writing", num: "02" },
-    { id: "contact", label: "Contact", num: "03" },
+    { id: "experience", label: "Experience", num: "01" },
+    { id: "research", label: "Research", num: "02" },
+    { id: "skills", label: "Expertise", num: "03" },
+    { id: "education", label: "Education", num: "04" },
+    { id: "contact", label: "Contact", num: "05" },
   ],
 
-  // ----- Hero -----
   hero: {
-    kicker: "— Indie hacking & AI, 2026",
-    headlineLine1: "Small teams,",
-    headlineAccent: "useful leverage.",
+    kicker: "— Tucker Clark",
     lede:
-      "I build small products, AI-native tools, and experiments that make the internet a little more useful — then share what I learn along the way.",
+      "I’m an offensive security professional with 7 years of experience delivering red team operations, penetration testing, and application security assessments across network, cloud, web, and AI environments.",
     meta: {
-      location: "California · online",
-      availability: "Open to good ideas",
-      email: "hello@example.com",
+      experience: "7 years in tech",
+      focus: "red team · penetration testing · AI security",
+      email: "tuckerclark91@gmail.com",
     },
   },
 
-  // ----- Work / engagements section -----
-  work: {
-    label: "Selected builds",
-    count: "04 / 12",
-    items: [
-      { year: "2026", title: "Prompt Bench", tag: "AI product", href: "#" },
-      { year: "2025", title: "Tiny Tools", tag: "Micro-SaaS", href: "#" },
-      { year: "2024", title: "Signal Garden", tag: "Experiment", href: "#" },
-      { year: "2023", title: "Field Notes", tag: "Open source", href: "#" },
-    ],
-    seeAllLabel: "See all builds →",
-    seeAllHref: "#",
-  },
-
-  // ----- Writing section -----
-  writing: {
-    label: "Notes & writing",
-    count: "03 / 10",
+  experience: {
+    label: "Experience",
     items: [
       {
-        title: "What I learned shipping a tiny AI product",
-        date: "May 2026",
-        href: "#",
+        period: "February 2025 – Present",
+        company: "TikTok",
+        role: "Senior Offensive Security Engineer",
+        location: "New York, NY",
+        highlights: [
+          "Engineered and scaled a continuous automated penetration testing deployment across 4 tenancies, expanding network coverage to ~137K hosts.",
+          "Defined scope, approvals, and guardrails for continuous testing operations via a comprehensive rules of engagement framework, enabling seamless integration of additional network segments and infrastructure into automated testing pipelines.",
+          "Built automated scan-to-ticketing integrations that ingested findings directly into the internal SOC platform, and developed SOPs, CLI tooling, and LLM-integrated API connectors enabling the broader team to operate and extend the deployment independently.",
+          "Integrated offensive operation findings into a breach and attack simulation platform via custom Python scripts spanning multiple infrastructure segments, providing actionable data for detection engineering.",
+          "Built automated WAF posture validation tooling against load-balanced targets using categorized payload wordlists across common web vulnerability classes, tracking allow/block outcomes for baseline efficacy measurement.",
+          "Nominated for two awards and recipient of one for solo-executing PCI DSS tests of over 200,000 hosts.",
+          "Performed PCI penetration tests, AI security reviews, mobile device management evaluations, voice synthesis model assessments, web application security assessments and internal network penetration tests.",
+        ],
       },
       {
-        title: "A practical case for smaller software",
-        date: "Mar 2026",
-        href: "#",
+        period: "May 2022 – February 2025",
+        company: "Google (Mandiant)",
+        role: "Senior Red Team Consultant",
+        location: "Remote",
+        highlights: [
+          "Nominated for Mandiant’s 2024 Consulting Excellence Award for efforts helping to secure the 2024 United States Presidential Election.",
+          "Won Mandiant’s 2024 Thought Leadership Award for drafting novel research on the integration of Red Teaming and Artificial Intelligence.",
+          "Drafted and delivered Mandiant’s first Large Language Model penetration testing service line, primarily focusing on adversarial input and data leakage.",
+          "Authored and published the Red Teaming Artificial Intelligence (AI) article in the 2024 M-TRENDS Report.",
+          "Directly emulated advanced threat actor TTPs across multiple red team and penetration testing engagements against Windows, Linux, and Mac environments.",
+          "Presented findings to client management and executive teams ranging from operational engineers to the executive suite of Fortune 50 companies.",
+          "Conducted extensive web application and source code review including both dynamic and static application security testing across a variety of technology stacks.",
+        ],
       },
       {
-        title: "Notes on building in public",
-        date: "Jan 2026",
-        href: "#",
+        period: "May 2020 – May 2022",
+        company: "Tennessee Valley Authority",
+        role: "Cybersecurity Analyst",
+        location: "Chattanooga, TN",
+        highlights: [
+          "Conducted Breach and Attack Simulations (BAS) in custom lab environments to determine the effectiveness of Endpoint Detection and Response solutions.",
+          "Established, managed, and ran a government bug bounty/vulnerability disclosure program through HackerOne.",
+          "Launched customized Key Performance Indicators utilizing EPRI research, creating metrics for interpreting human risk factors in overall cybersecurity risk posture.",
+          "Automated risk assessment and analysis of 3,880 mobile device users and applications.",
+        ],
       },
     ],
   },
 
-  // ----- Contact section -----
+  research: {
+    label: "Research",
+    items: [
+      {
+        title: "The Ripple Effect of Unsecured Data: A Red Team Case Study",
+        date: "2025",
+        description:
+          "Authored and published in the 2025 M-Trends Report on uncovering credentials and secrets in unsecured internal data repositories.",
+        href: "https://services.google.com/fh/files/misc/m-trends-2025-en.pdf",
+      },
+      {
+        title: "Artificial Intelligence in Red (and Purple) Team Operations",
+        date: "2024",
+        description:
+          "Authored and published in the 2024 M-Trends Report on applications of artificial intelligence in red and purple team operations.",
+        href: "https://services.google.com/fh/files/misc/06-ai-article-m-trends-2024.pdf",
+      },
+    ],
+  },
+
+  skills: {
+    label: "Expertise",
+    groups: [
+      {
+        title: "Red Teaming & Penetration Testing",
+        detail:
+          "Extensive experience with EDR technologies and evasion, building C2 infrastructure, red team tooling, and AI/ML security assessments.",
+      },
+      {
+        title: "Certifications",
+        detail:
+          "OSWA, OSWP, Mandiant CRT, PNPT, CISA RVA/HVA Operator Skills Test",
+      },
+      {
+        title: "Programming Languages",
+        detail: "Python, JavaScript, CSS, C++",
+      },
+      {
+        title: "Security Tooling",
+        detail:
+          "Continuous automated testing platforms, breach and attack simulation tools, WAF validation frameworks, custom C2 frameworks",
+      },
+    ],
+  },
+
+  education: {
+    label: "Education",
+    school: "University of Tennessee at Chattanooga",
+    degree: "B.S. in Computer Science: Data Science",
+    period: "May 2020",
+    location: "Chattanooga, TN",
+    highlights: [
+      "Freshman Mathematics Award; UTC Tech Symposium Engineering 3rd Place Overall CS",
+      "Teaching Assistant for Introduction to Machine Learning",
+      "NSF S-STEM Scholarship; UTC URaCE Summer Fellow",
+      "Selected for COLAB’s GIGTANK startup accelerator to explore startup viability of research projects.",
+    ],
+  },
+
   contact: {
     label: "Contact",
-    email: "hello@example.com",
-    note: "Interested in a project, collaboration, or a strange idea? I’d love to hear it.",
+    email: "tuckerclark91@gmail.com",
   },
 
-  // ----- Footer -----
   footer: {
-    left: "© 2026 Tucker",
-    right: "Building in public · 2026",
+    left: "© 2026 Tucker Clark",
+    right: "Resume data · Updated July 2026",
   },
 };
 

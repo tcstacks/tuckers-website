@@ -4,11 +4,24 @@ import { useEffect, useState } from "react";
 import { useContent } from "./contentStore";
 import { AddItem, EditField, ListControls } from "./Editor";
 
-const hasLink = (href: string) => href.trim() !== "" && href !== "#";
+const hasLink = (href: string) => {
+  const value = href.trim();
+  return value !== "" && value !== "#";
+};
 
 export function SiteShell() {
   const { content, editMode } = useContent();
-  const { sidebar, nav, hero, work, writing, contact, footer } = content;
+  const {
+    sidebar,
+    nav,
+    hero,
+    experience,
+    research,
+    skills,
+    education,
+    contact,
+    footer,
+  } = content;
   const firstNavId = nav[0]?.id ?? "intro";
   const [active, setActive] = useState(firstNavId);
 
@@ -109,7 +122,8 @@ export function SiteShell() {
                   <div key={`${s.label}-${i}`} className="socialRow">
                     {linked ? (
                       <a href={s.href} target="_blank" rel="noreferrer">
-                        <EditField path={`sidebar.socials.${i}.label`} /> ↗
+                        <EditField path={`sidebar.socials.${i}.label`} />{" "}
+                        <span aria-hidden="true">↗</span>
                       </a>
                     ) : (
                       <span className="inactiveLink">
@@ -134,125 +148,240 @@ export function SiteShell() {
         </aside>
 
         <main className="content">
-          <section id="intro" className="intro" aria-labelledby="intro-heading">
+          <section id="intro" className="intro" aria-label="Introduction">
             <EditField path="hero.kicker" as="p" className="kicker fade" />
-            <h1 id="intro-heading" className="fade">
-              <EditField path="hero.headlineLine1" /><br />
-              <EditField path="hero.headlineAccent" className="accent" />
-            </h1>
             <EditField path="hero.lede" as="p" className="lede fade" multiline />
             <div className="introMeta fade">
-              <EditField path="hero.meta.location" />
-              <span className="dot" />
-              <EditField path="hero.meta.availability" />
-              <span className="dot" />
-              <a href={`mailto:${hero.meta.email}`} className="metaLink">
-                <EditField path="hero.meta.email" />
-              </a>
+              <EditField path="hero.meta.experience" />
+              <span className="dot" aria-hidden="true" />
+              <EditField path="hero.meta.focus" />
+              <span className="dot" aria-hidden="true" />
+              {hasLink(hero.meta.email) ? (
+                <a href={`mailto:${hero.meta.email}`} className="metaLink">
+                  <EditField path="hero.meta.email" />
+                </a>
+              ) : (
+                <EditField path="hero.meta.email" className="metaLink" />
+              )}
             </div>
           </section>
 
-          <section id="work" className="section" aria-labelledby="work-heading">
+          <section
+            id="experience"
+            className="section"
+            aria-labelledby="experience-heading"
+          >
             <header className="sectionHead fade">
-              <h2 id="work-heading" className="label">
-                <EditField path="work.label" />
+              <h2 id="experience-heading" className="label">
+                <EditField path="experience.label" />
               </h2>
-              {hasLink(work.seeAllHref) ? (
-                <EditField path="work.count" className="count" />
-              ) : null}
             </header>
-            <ul className="list fade">
-              {work.items.map((item, i) => {
-                const rowContent = (
-                  <>
-                    <EditField path={`work.items.${i}.year`} className="rowYear" />
-                    <EditField path={`work.items.${i}.title`} className="rowTitle" />
-                    <EditField path={`work.items.${i}.tag`} className="rowTag" />
-                    <span className="rowArrow" aria-hidden="true">↗</span>
-                  </>
-                );
-
-                return (
-                  <li key={`${item.title}-${i}`} className="row">
-                    {hasLink(item.href) ? (
-                      <a href={item.href} className="rowLink">
-                        {rowContent}
-                      </a>
-                    ) : (
-                      <div className="rowLink rowLinkStatic">{rowContent}</div>
-                    )}
-                    <ListControls
-                      path="work.items"
-                      index={i}
-                      length={work.items.length}
+            <div className="experienceList fade">
+              {experience.items.map((item, i) => (
+                <article
+                  key={`${item.company}-${item.role}-${i}`}
+                  className="experienceItem"
+                >
+                  <div className="experienceTop">
+                    <EditField
+                      path={`experience.items.${i}.company`}
+                      as="h3"
+                      className="experienceCompany"
                     />
-                  </li>
-                );
-              })}
-            </ul>
+                    <EditField
+                      path={`experience.items.${i}.period`}
+                      as="p"
+                      className="experiencePeriod"
+                    />
+                    <EditField
+                      path={`experience.items.${i}.location`}
+                      as="p"
+                      className="experienceLocation"
+                    />
+                  </div>
+                  <EditField
+                    path={`experience.items.${i}.role`}
+                    as="p"
+                    className="experienceRole"
+                  />
+                  <ul className="experienceHighlights">
+                    {item.highlights.map((highlight, highlightIndex) => (
+                      <li key={`${highlight}-${highlightIndex}`}>
+                        <EditField
+                          path={`experience.items.${i}.highlights.${highlightIndex}`}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                  <ListControls
+                    path="experience.items"
+                    index={i}
+                    length={experience.items.length}
+                  />
+                </article>
+              ))}
+            </div>
             <AddItem
-              path="work.items"
-              template={{ year: "2026", title: "New", tag: "Tag", href: "#" }}
-              label="+ Engagement"
+              path="experience.items"
+              template={{
+                period: "Period",
+                company: "Company",
+                role: "Role",
+                location: "Location",
+                highlights: ["New accomplishment"],
+              }}
+              label="+ Experience"
             />
-            {hasLink(work.seeAllHref) ? (
-              <a href={work.seeAllHref} className="seeAll fade">
-                <EditField path="work.seeAllLabel" />
-              </a>
-            ) : null}
           </section>
 
           <section
-            id="writing"
+            id="research"
             className="section"
-            aria-labelledby="writing-heading"
+            aria-labelledby="research-heading"
           >
             <header className="sectionHead fade">
-              <h2 id="writing-heading" className="label">
-                <EditField path="writing.label" />
+              <h2 id="research-heading" className="label">
+                <EditField path="research.label" />
               </h2>
             </header>
-            <ul className="notes fade">
-              {writing.items.map((item, i) => {
-                const rowContent = (
+            <div className="researchList fade">
+              {research.items.map((item, i) => {
+                const linked = hasLink(item.href);
+                const researchContent = (
                   <>
-                    <EditField
-                      path={`writing.items.${i}.title`}
-                      className="noteTitle"
-                    />
-                    <span className="noteRight">
+                    <div className="researchMain">
                       <EditField
-                        path={`writing.items.${i}.date`}
-                        className="noteMeta"
+                        path={`research.items.${i}.title`}
+                        as="h3"
+                        className="researchTitle"
                       />
-                      <span className="noteArrow" aria-hidden="true">↗</span>
-                    </span>
+                      <EditField
+                        path={`research.items.${i}.description`}
+                        as="p"
+                        className="researchDescription"
+                        multiline
+                      />
+                    </div>
+                    <div className="researchMeta">
+                      <EditField path={`research.items.${i}.date`} />
+                      {linked ? <span aria-hidden="true">↗</span> : null}
+                    </div>
                   </>
                 );
 
                 return (
-                  <li key={`${item.title}-${i}`} className="noteRow">
-                    {hasLink(item.href) ? (
-                      <a href={item.href} className="noteLink">
-                        {rowContent}
+                  <article
+                    key={`${item.title}-${i}`}
+                    className="researchItem"
+                  >
+                    {linked ? (
+                      <a
+                        href={item.href}
+                        className="researchLink"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {researchContent}
                       </a>
                     ) : (
-                      <div className="noteLink noteLinkStatic">{rowContent}</div>
+                      <div className="researchLink">{researchContent}</div>
                     )}
                     <ListControls
-                      path="writing.items"
+                      path="research.items"
                       index={i}
-                      length={writing.items.length}
+                      length={research.items.length}
                     />
-                  </li>
+                  </article>
                 );
               })}
-            </ul>
+            </div>
             <AddItem
-              path="writing.items"
-              template={{ title: "New post", date: "May 2026", href: "#" }}
-              label="+ Post"
+              path="research.items"
+              template={{
+                title: "Research title",
+                date: "Date",
+                description: "Research description",
+                href: "",
+              }}
+              label="+ Research"
             />
+          </section>
+
+          <section
+            id="skills"
+            className="section"
+            aria-labelledby="skills-heading"
+          >
+            <header className="sectionHead fade">
+              <h2 id="skills-heading" className="label">
+                <EditField path="skills.label" />
+              </h2>
+            </header>
+            <div className="skillsGrid fade">
+              {skills.groups.map((group, i) => (
+                <article key={`${group.title}-${i}`} className="skillGroup">
+                  <EditField
+                    path={`skills.groups.${i}.title`}
+                    as="h3"
+                    className="skillTitle"
+                  />
+                  <EditField
+                    path={`skills.groups.${i}.detail`}
+                    as="p"
+                    className="skillDetail"
+                    multiline
+                  />
+                  <ListControls
+                    path="skills.groups"
+                    index={i}
+                    length={skills.groups.length}
+                  />
+                </article>
+              ))}
+            </div>
+            <AddItem
+              path="skills.groups"
+              template={{ title: "Expertise", detail: "Details" }}
+              label="+ Expertise"
+            />
+          </section>
+
+          <section
+            id="education"
+            className="section"
+            aria-labelledby="education-heading"
+          >
+            <header className="sectionHead fade">
+              <h2 id="education-heading" className="label">
+                <EditField path="education.label" />
+              </h2>
+            </header>
+            <article className="educationCard fade">
+              <div className="educationTop">
+                <EditField
+                  path="education.school"
+                  as="h3"
+                  className="educationSchool"
+                />
+                <div className="educationMeta">
+                  <EditField path="education.period" />
+                  <span className="dot" aria-hidden="true" />
+                  <EditField path="education.location" />
+                </div>
+              </div>
+              <EditField
+                path="education.degree"
+                as="p"
+                className="educationDegree"
+              />
+              <ul className="educationHighlights">
+                {education.highlights.map((highlight, i) => (
+                  <li key={`${highlight}-${i}`}>
+                    <EditField path={`education.highlights.${i}`} />
+                  </li>
+                ))}
+              </ul>
+            </article>
           </section>
 
           <section
@@ -263,15 +392,13 @@ export function SiteShell() {
             <h2 id="contact-heading" className="label fade">
               <EditField path="contact.label" />
             </h2>
-            <a href={`mailto:${contact.email}`} className="email fade">
-              <EditField path="contact.email" />
-            </a>
-            <EditField
-              path="contact.note"
-              as="p"
-              className="contactNote fade"
-              multiline
-            />
+            {hasLink(contact.email) ? (
+              <a href={`mailto:${contact.email}`} className="email fade">
+                <EditField path="contact.email" />
+              </a>
+            ) : (
+              <EditField path="contact.email" className="email fade" />
+            )}
           </section>
 
           <footer className="foot">
