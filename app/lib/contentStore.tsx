@@ -51,8 +51,14 @@ function setByPath<T>(obj: T, path: string, value: unknown): T {
   return next as unknown as T;
 }
 
-export function ContentProvider({ children }: { children: ReactNode }) {
-  const [content, setContent] = useState<SiteContent>(defaultContent);
+export function ContentProvider({
+  children,
+  initialContent = defaultContent,
+}: {
+  children: ReactNode;
+  initialContent?: SiteContent;
+}) {
+  const [content, setContent] = useState<SiteContent>(initialContent);
   const [editMode, setEditMode] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
